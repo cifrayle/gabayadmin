@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gabay Admin Dashboard</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -45,7 +46,7 @@
                 </div>
                 <div class="header-actions">
                     <span id="adminInfo" class="admin-info"></span>
-                    <button id="logoutBtn" class="btn-secondary">
+                    <button id="logoutBtn" class="btn-secondary tooltip tooltip-top" data-tooltip="Sign out of admin panel">
                         <i class="fas fa-sign-out-alt"></i> Logout
                     </button>
                 </div>
@@ -112,7 +113,7 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <i class="fas fa-clock"></i>
+                        <i class="fas fa-stopwatch"></i>
                     </div>
                     <div class="stat-info">
                         <h3 id="avgTimeSpent">0 min</h3>
@@ -128,7 +129,7 @@
                 <h2>User Management</h2>
                 <div class="table-actions">
                     <input type="text" id="userSearch" placeholder="Search users..." class="search-input">
-                    <button id="refreshUsers" class="btn-primary">
+                    <button id="refreshUsers" class="btn-primary tooltip" data-tooltip="Refresh user list">
                         <i class="fas fa-refresh"></i> Refresh
                     </button>
                 </div>

@@ -18,8 +18,17 @@ const loading = document.getElementById('loading');
 // Initialize App
 document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
+    initializeUI();
     checkAuthStatus();
 });
+
+function initializeUI() {
+    // Ensure error message is hidden on page load
+    if (loginError) {
+        loginError.textContent = '';
+        loginError.classList.remove('show');
+    }
+}
 
 function setupEventListeners() {
     // Login form
@@ -50,6 +59,7 @@ async function handleLogin(e) {
     try {
         showLoading(true);
         loginError.textContent = '';
+        loginError.classList.remove('show');
         
         const response = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
             method: 'POST',
@@ -78,6 +88,17 @@ async function handleLogin(e) {
         }
     } catch (error) {
         loginError.textContent = error.message;
+        loginError.classList.add('show');
+        
+        // Auto-hide error after 5 seconds
+        setTimeout(() => {
+            loginError.classList.remove('show');
+            setTimeout(() => {
+                if (!loginError.classList.contains('show')) {
+                    loginError.textContent = '';
+                }
+            }, 300); // Wait for animation to complete
+        }, 5000);
     } finally {
         showLoading(false);
     }
@@ -85,7 +106,7 @@ async function handleLogin(e) {
 
 function isUserAdmin(email) {
     // Admin check - customize this logic
-    const adminEmails = ['admin@gabay.com', 'superadmin@gabay.com, gabayadmin@gmail.com'];
+    const adminEmails = ['admin@gabay.com', 'superadmin@gabay.com', 'gabayadmin@gmail.com'];
     return adminEmails.includes(email) || email.includes('admin');
 }
 
@@ -397,13 +418,13 @@ function displayUsers(users) {
             <td>${streakDisplay}</td>
             <td>
                 <div class="action-buttons">
-                    <button class="action-btn btn-view" onclick="viewUser('${user.id}')">
+                    <button class="action-btn btn-view tooltip" onclick="viewUser('${user.id}')" data-tooltip="View user details">
                         <i class="fas fa-eye"></i>
                     </button>
-                    <button class="action-btn btn-reset" onclick="resetUser('${user.id}')">
+                    <button class="action-btn btn-reset tooltip" onclick="resetUser('${user.id}')" data-tooltip="Reset user progress">
                         <i class="fas fa-redo"></i>
                     </button>
-                    <button class="action-btn btn-delete" onclick="deleteUser('${user.id}')">
+                    <button class="action-btn btn-delete tooltip" onclick="deleteUser('${user.id}')" data-tooltip="Delete user permanently">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
