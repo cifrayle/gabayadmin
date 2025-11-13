@@ -579,7 +579,17 @@ async function resetUser(userId) {
     try {
         showLoading(true);
         
-        // Reset user profile
+        // Delete all user progress records
+        const progressResponse = await fetch(`${SUPABASE_URL}/rest/v1/user_progress?user_id=eq.${userId}`, {
+            method: 'DELETE',
+            headers: {
+                'apikey': SUPABASE_API_KEY,
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        // Reset user profile (if it exists)
         const profileResponse = await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?id=eq.${userId}`, {
             method: 'PATCH',
             headers: {
@@ -589,7 +599,9 @@ async function resetUser(userId) {
                 'Prefer': 'return=representation'
             },
             body: JSON.stringify({
-                // Reset basic profile data only
+                // Reset any profile-level progress tracking if it exists
+                current_level: null,
+                current_chapter: null
             })
         });
         
@@ -606,12 +618,16 @@ async function resetUser(userId) {
                 total_sessions: 0,
                 total_time_spent_minutes: 0,
                 chapters_completed: 0,
+                levels_completed: 0,
                 current_streak_days: 0,
-                longest_streak_days: 0
+                longest_streak_days: 0,
+                app_rating: null,
+                rating_comment: null,
+                favorite_chapter: null
             })
         });
         
-        if (profileResponse.ok) {
+        if (progressResponse.ok || profileResponse.ok) {
             alert('User progress and analytics reset successfully!');
             await loadUsers();
             await loadUserAnalytics();
