@@ -1088,7 +1088,6 @@ table {
 #usersTable th,
 #usersTable td {
     padding: 0.75rem 0.5rem;
-    text-align: left;
     border-bottom: 1px solid var(--border-light);
     font-size: 0.9rem;
 }
@@ -1097,6 +1096,21 @@ table {
     background: var(--bg-secondary);
     font-weight: 600;
     color: var(--text-primary);
+}
+
+#usersTable th:nth-child(1),
+#usersTable td:nth-child(1),
+#usersTable th:nth-child(2),
+#usersTable td:nth-child(2) {
+    text-align: left;
+}
+
+#usersTable th:nth-child(n+3),
+#usersTable td:nth-child(n+3) {
+    text-align: center;
+}
+
+#usersTable th {
     position: sticky;
     top: 0;
     z-index: 10;
